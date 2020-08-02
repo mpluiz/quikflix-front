@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://api.quikflix.com.br/api/v1',
+  baseURL: process.env.REACT_APP_API_BASE_URL,
 });
 
 export default api;
