@@ -13,31 +13,46 @@ function Home() {
   const [errorMessage, setErrorMessage] = useState();
 
   useEffect(() => {
-    const getPopularMovies = async () => {
-      const response = await api.get(`/trending/movie/day`);
-      setMovies(response.data.results);
-    };
-
-    const getGenres = async () => {
-      const response = await api.get(`/genre/movie/list`);
-      setGenres(response.data);
-    }
-
     getPopularMovies();
     getGenres();
   }, []);
 
+  async function getPopularMovies() {
+    const response = await api.get(`/trending/movie/day`);
+    setMovies(response.data.results);
+  }
+
+  async function getGenres() {
+    const response = await api.get(`/genre/movie/list`);
+    setGenres(response.data);
+  }
+
+  async function getDiscover() {
+    const response = await api.get(`/discover/movie?with_genre=${genre}`);
+    setMovies(response.data.results);
+  }
+
   async function handleAddMovies(event) {
     event.preventDefault();
-    await api.get(`/search/movie?query=${newMovies}&with_genre=${genre}`).then(function(response) {
-      if (response.data.results.length !== 0) {
-        setMovies(response.data.results);
-        setErrorMessage('');
-      } else {
-        setErrorMessage(`Nenhum filme econtrado`);
-        setMovies([]);
-      }
-    });
+
+    if (newMovies.length === 0 && genre !== 'default') {
+      getDiscover();
+      setErrorMessage('');
+    } else if (newMovies.length === 0) {
+      getPopularMovies();
+      setErrorMessage('');
+    } else {
+      await api.get(`/search/movie?query=${newMovies}&with_genre=${genre}`).then(function(response) {
+        console.log(response);
+        if (response.data.results && response.data.results.length !== 0) {
+          setMovies(response.data.results);
+          setErrorMessage('');
+        } else {
+          setErrorMessage(`Nenhum filme econtrado`);
+          setMovies([]);
+        }
+      });
+    }
   }
 
   function formatDate(date) {
