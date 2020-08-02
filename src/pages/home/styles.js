@@ -110,3 +110,10 @@ export const Movie = styled.div`
     }
   }
 `;
+
+export const ErrorMessage = styled.h1`
+  font-size: 48px;
+  color: #e50914;
+  line-height: 56px;
+  margin-top: 30px;
+`;

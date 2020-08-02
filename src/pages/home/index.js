@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Title, Form, ListMovies, Movie } from './styles';
+import { Title, Form, ListMovies, Movie, ErrorMessage } from './styles';
 
 import api from '../../services/api';
 
@@ -65,7 +65,7 @@ function Home() {
           <button type="submit">Pesquisar</button>
         </Form>
 
-        <h1>{ errorMessage }</h1>
+        <ErrorMessage>{ errorMessage }</ErrorMessage>
 
         { movies && (
           <ListMovies>
